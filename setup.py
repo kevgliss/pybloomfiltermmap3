@@ -3,18 +3,6 @@ import sys
 
 from setuptools import setup, Extension
 
-try:
-  from Cython.Distutils import build_ext
-except ImportError:
-  print("""Cannot find Cython!
-  Cython is required to correctly build pyBloomFilter's C extensions.
-  In most cases, running the following command should be sufficient:
-    $ pip install Cython
-
-  Exception: ImportError
-  """)
-  exit()
-
 here = os.path.dirname(__file__)
 
 ext_files = [
@@ -25,8 +13,6 @@ ext_files = [
   'src/MurmurHash3.c',
   'src/pybloomfilter.pyx'
 ]
-
-print("info: Building from Cython")
 
 ext_modules = [
   Extension("pybloomfilter", ext_files, libraries=['crypto'])
@@ -44,6 +30,7 @@ setup(
   description="A Bloom filter (bloomfilter) for Python 3 built on mmap",
   license="MIT License",
   test_suite='tests.test_all',
+  setup_requires=['setuptools>=18.0', 'cython'],
   install_requires=[],
   ext_modules=ext_modules,
   classifiers=[
@@ -56,6 +43,5 @@ setup(
     'Programming Language :: Python',
     'Programming Language :: Python :: 3',
     'Topic :: Software Development :: Libraries :: Python Modules',
-  ],
-  cmdclass={'build_ext': build_ext}
+  ]
 )
